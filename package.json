@@ -2,9 +2,18 @@
   "name": "mtn-pay",
   "version": "0.0.1",
   "description": "A TypeScript package to allow paying with MTN Mobile Money",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "test": "jest"
+    "test": "jest --config jestconfig.json",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
@@ -21,5 +30,17 @@
   "bugs": {
     "url": "https://github.com/sopherapps/mtn-pay-js/issues"
   },
-  "homepage": "https://github.com/sopherapps/mtn-pay-js#readme"
+  "homepage": "https://github.com/sopherapps/mtn-pay-js#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.13",
+    "jest": "^24.8.0",
+    "prettier": "^1.17.1",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.17.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.5.1"
+  },
+  "files": [
+    "lib/**/*"
+  ]
 }
