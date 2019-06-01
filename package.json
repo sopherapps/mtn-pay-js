@@ -1,0 +1,25 @@
+{
+  "name": "mtn-pay",
+  "version": "0.0.1",
+  "description": "A TypeScript package to allow paying with MTN Mobile Money",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sopherapps/mtn-pay-js.git"
+  },
+  "keywords": [
+    "MTN",
+    "mobile",
+    "money",
+    "API"
+  ],
+  "author": "Martin Ahindura",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sopherapps/mtn-pay-js/issues"
+  },
+  "homepage": "https://github.com/sopherapps/mtn-pay-js#readme"
+}
