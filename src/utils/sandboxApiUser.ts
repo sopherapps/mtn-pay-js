@@ -1,3 +1,5 @@
+/// https://ericssonbasicapi2.azure-api.net/v1_0/apiuser
+
 import { generate as uuidv4 } from 'uuidjs';
 import getResources, { IResource } from './repository';
 
