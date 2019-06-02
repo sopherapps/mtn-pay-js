@@ -9,6 +9,8 @@ jest.mock("axios");
 describe('repository', () => {
   const resourceNames = ["books", "tables", "pens"];
   const baseURL = "http://localhost";
+  const commonHeaders = { 'Authorization': 'Bearer some-token' };
+  const specificHeaders = { 'X-security': 'helmet' };
 
   describe("processRemoteResources", () => {
     const mockBooks = [
@@ -38,13 +40,13 @@ describe('repository', () => {
             })
           );
 
-          await processRemoteResources(mockResourceName, baseURL)
-            .list()
+          await processRemoteResources(mockResourceName, baseURL, commonHeaders)
+            .list({}, specificHeaders)
             .then(resp =>
               expect(resp).toMatchObject({
                 request: {
-                  url: `/${mockResourceName}/`,
-                  config: { baseURL, params: {} }
+                  url: `/${mockResourceName}`,
+                  config: { baseURL, params: {}, headers: { ...commonHeaders, ...specificHeaders } }
                 },
                 data: mockBooks
               })
@@ -70,7 +72,7 @@ describe('repository', () => {
             .then(resp =>
               expect(resp).toMatchObject({
                 request: {
-                  url: `/${mockResourceName}/`,
+                  url: `/${mockResourceName}`,
                   config: { baseURL, params: queryParams }
                 },
                 data: mockBooks
@@ -95,13 +97,13 @@ describe('repository', () => {
               })
             );
 
-            await processRemoteResources(mockResourceName, baseURL)
-              .getOne(book.id)
+            await processRemoteResources(mockResourceName, baseURL, commonHeaders)
+              .getOne(book.id, specificHeaders)
               .then(resp =>
                 expect(resp).toMatchObject({
                   request: {
-                    url: `/${mockResourceName}/${book.id}/`,
-                    config: { baseURL }
+                    url: `/${mockResourceName}/${book.id}`,
+                    config: { baseURL, headers: { ...commonHeaders, ...specificHeaders } }
                   },
                   data: book
                 })
@@ -130,14 +132,14 @@ describe('repository', () => {
               })
             );
 
-            await processRemoteResources(mockResourceName, baseURL)
-              .update(book.id, new_update)
+            await processRemoteResources(mockResourceName, baseURL, commonHeaders)
+              .update(book.id, new_update, specificHeaders)
               .then(resp =>
                 expect(resp).toMatchObject({
                   request: {
-                    url: `/${mockResourceName}/${book.id}/`,
+                    url: `/${mockResourceName}/${book.id}`,
                     payload: new_update,
-                    config: { baseURL }
+                    config: { baseURL, headers: { ...commonHeaders, ...specificHeaders } }
                   },
                   data: updatedBook
                 })
@@ -163,14 +165,14 @@ describe('repository', () => {
               })
             );
 
-            await processRemoteResources(mockResourceName, baseURL)
-              .destroy(book.id)
+            await processRemoteResources(mockResourceName, baseURL, commonHeaders)
+              .destroy(book.id, specificHeaders)
               .then(resp =>
                 expect(resp).toMatchObject({
                   ...mockedResponse,
                   request: {
-                    url: `/${mockResourceName}/${book.id}/`,
-                    config: { baseURL }
+                    url: `/${mockResourceName}/${book.id}`,
+                    config: { baseURL, headers: { ...commonHeaders, ...specificHeaders } }
                   }
                 })
               );
@@ -181,7 +183,7 @@ describe('repository', () => {
     describe("create", () => {
 
       it('Returns the result of a call to the Axios post method at \
-          url "baseURL/resourceName" with supplied payload', async () => {
+          url "baseURL/resourceName" with supplied payload and headers ', async () => {
           const newBook = { id: "ytb", name: "Why Today?" };
           // @ts-ignore
           await axios.post.mockImplementation((url: string, payload: any, config: any) =>
@@ -197,14 +199,14 @@ describe('repository', () => {
 
           const postPayload = { name: newBook.name };
 
-          await processRemoteResources(mockResourceName, baseURL)
-            .create(postPayload)
+          await processRemoteResources(mockResourceName, baseURL, commonHeaders)
+            .create(postPayload, specificHeaders)
             .then(resp =>
               expect(resp).toMatchObject({
                 request: {
-                  url: `/${mockResourceName}/`,
+                  url: `/${mockResourceName}`,
                   payload: postPayload,
-                  config: { baseURL }
+                  config: { baseURL, headers: { ...commonHeaders, ...specificHeaders } }
                 },
                 data: newBook
               })
@@ -223,13 +225,14 @@ describe('repository', () => {
       });
 
     it("Calls the resourceProcessor function for each\
-        resourceName supplied with the given baseURL", () => {
-        const processRemoteResourcesMock = jest.fn((data, url) => ({
+        resourceName supplied with the given baseURL and commonHeaders", () => {
+        const processRemoteResourcesMock = jest.fn((data, url, headers) => ({
           resourceName: data,
-          baseURL: url
+          baseURL: url,
+          headers
         }));
 
-        getResources(resourceNames, baseURL, processRemoteResourcesMock);
+        getResources(resourceNames, baseURL, commonHeaders, processRemoteResourcesMock);
 
         expect(processRemoteResourcesMock.mock.calls.length).toBe(
           resourceNames.length
@@ -239,7 +242,8 @@ describe('repository', () => {
             processRemoteResourcesMock.mock.results[index].value
           ).toMatchObject({
             resourceName: resourceNames[index],
-            baseURL
+            baseURL,
+            headers: commonHeaders
           });
         }
       });
