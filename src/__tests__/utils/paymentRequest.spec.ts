@@ -1,6 +1,8 @@
 import PaymentRequest, { IPaymentRequestConfig, IPayer, IStatus, Status } from '../../utils/paymentRequest';
 import { generate as uuidv4 } from 'uuidjs';
 
+const requestTimeout = 40000;
+
 describe('PaymentRequest', () => {
   const payer: IPayer = {
     partyId: process.env.TELEPHONE_FOR_SUCCESS_TX_AFTER_30_SECS || '',
@@ -17,7 +19,7 @@ describe('PaymentRequest', () => {
     targetEnvironment: process.env.TEST_TARGET_ENVIRONMENT || 'sandbox',
     apiuserId: process.env.TEST_API_USER_ID || '',
     apiKey: process.env.TEST_API_KEY || '',
-    timeout: 20,
+    timeout: requestTimeout,
     baseURL: (process.env.TEST_COLLECTION_BASE_URL ||
       'https://ericssonbasicapi2.azure-api.net/collection/v1_0'),
     authBaseURL: (process.env.TEST_COLLECTION_AUTH_BASE_URL || 'https://ericssonbasicapi2.azure-api.net/collection'),
@@ -29,7 +31,7 @@ describe('PaymentRequest', () => {
       it('Requests payment from customer and returns 202 status', async () => {
         const response = await paymentRequest.initialize();
         expect(response.status).toBe(202);
-      }, 10000);
+      }, Math.max(requestTimeout / 4, 5000));
     });
 
     describe('pollStatus', () => {
@@ -42,7 +44,7 @@ describe('PaymentRequest', () => {
           } else {
             expect(response.httpResponse.data.status).toBe(Status.PENDING);
           }
-        }, 36000);
+        }, Math.max(requestTimeout * 2, 5000));
 
       it('Returns the status and the reason for the given status if not successful', async () => {
         const response = await paymentRequest.pollStatus();
@@ -50,7 +52,7 @@ describe('PaymentRequest', () => {
         if (response.httpResponse.data.status !== Status.SUCCESSFUL) {
           expect(response.httpResponse.data).toHaveProperty('reason');
         }
-      }, 36000);
+      }, Math.max(requestTimeout * 2, 5000));
 
       it('Updates the status property of the PaymentRequest object', async () => {
         const response = await paymentRequest.pollStatus();
@@ -59,27 +61,21 @@ describe('PaymentRequest', () => {
           code: response.httpResponse.data.reason.code || '',
           reason: response.httpResponse.data.reason.message || ''
         })
-      }, 36000);
+      }, Math.max(requestTimeout * 2, 5000));
     });
 
-    // describe('getDetails', () => {
-    //   const details = paymentRequest.getDetails();
-    //   it('Returns the amount, currency, externalId, payer, status and reason for status \
-    //   of a given transaction/requested payment', () => {
-    //       expect(details).toHaveProperty('amount');
-    //       expect(details).toHaveProperty('currency');
-    //       expect(details).toHaveProperty('externalId');
-    //       expect(details).toHaveProperty('payer');
-    //       expect(details).toHaveProperty('status');
-    //       expect(details).toHaveProperty('reason');
-    //     });
-    // });
+    describe('getDetails', () => {
 
-    // describe('isCustomerActive', async () => {
-    //   const isCustomerActive = await paymentRequest.isCustomerActive();
-    //   it('Returns a boolean showing that the customer is active or not', () => {
-    //     expect(isCustomerActive).toBe(true);
-    //   });
-    // });
+      it('Returns the amount, currency, externalId, payer, status and reason for status \
+      of a given transaction/requested payment', async () => {
+          const details = await paymentRequest.getDetails();
+          expect(details).toHaveProperty('amount');
+          expect(details).toHaveProperty('currency');
+          expect(details).toHaveProperty('externalId');
+          expect(details).toHaveProperty('payer');
+          expect(details).toHaveProperty('status');
+          expect(details).toHaveProperty('reason');
+        }, Math.max(requestTimeout * 2, 5000));
+    });
   });
 });

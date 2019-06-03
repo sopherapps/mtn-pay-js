@@ -45,6 +45,7 @@ export enum Status {
   SUCCESSFUL = 'SUCCESSFUL',
   FAILED = 'FAILED',
   PENDING = 'PENDING',
+  UNINITIALIZED = 'UNINITIALIZED',
 }
 
 export interface IPaymentDetails {
@@ -77,7 +78,7 @@ export default class PaymentRequest {
   public referenceId: string;
   public status: IStatus = {
     code: '',
-    text: '',
+    text: Status.UNINITIALIZED,
     reason: '',
   };
   private timeout: number;
@@ -180,7 +181,11 @@ export default class PaymentRequest {
   /**
    * is sort of a getter for the details of this payment request
    */
-  public getDetails(): IPaymentDetails | undefined {
+  public async getDetails(): Promise<IPaymentDetails | undefined> {
+    if (this.status.text === Status.UNINITIALIZED) {
+      await this.initialize();
+      await this.pollStatus();
+    }
     return this.details;
   }
 
