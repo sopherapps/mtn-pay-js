@@ -1,18 +1,15 @@
-import axios from "axios";
-
-import SandboxApiUser from "../../utils/sandboxApiUser";
-
-// jest.mock("axios");
+import SandboxApiUser from '../../utils/sandboxApiUser';
 
 describe('sandboxApiUser', () => {
   it('requires process environment variables TEST_BASE_URL, TEST_SUBSCRIPTION_KEY', () => {
     expect(process.env).toHaveProperty('TEST_BASE_URL');
-    expect(process.env).toHaveProperty('TEST_SUBSCRIPTION_KEY');
+    expect(process.env).toHaveProperty('TEST_SUBSCRIPTION_KEY_FOR_DISBURSEMENTS');
   });
 
   describe('methods', () => {
-    const subscriptionKey = process.env.TEST_SUBSCRIPTION_KEY || '';
+    const subscriptionKey = process.env.TEST_SUBSCRIPTION_KEY_FOR_COLLECTIONS || '';
     const baseURL = process.env.TEST_BASE_URL || 'https://ericssonbasicapi2.azure-api.net/v1_0';
+
     const sandboxApiUser = new SandboxApiUser({ baseURL, subscriptionKey });
 
     describe('initialize', () => {
@@ -20,7 +17,7 @@ describe('sandboxApiUser', () => {
        and returns a status of 201', async () => {
           const response: any = await sandboxApiUser.initialize();
           expect(response).toMatchObject({
-            status: 201
+            status: 201,
           });
         });
     });
