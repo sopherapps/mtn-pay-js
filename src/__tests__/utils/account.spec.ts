@@ -7,10 +7,9 @@ describe('Account', () => {
     targetEnvironment: process.env.TEST_TARGET_ENVIRONMENT || 'sandbox',
     apiuserId: process.env.TEST_API_USER_ID || '',
     apiKey: process.env.TEST_API_KEY || '',
-    baseURL: (process.env.TEST_COLLECTION_BASE_URL ||
-      'https://ericssonbasicapi2.azure-api.net/collection/v1_0'),
-    authBaseURL: (process.env.TEST_COLLECTION_AUTH_BASE_URL || 'https://ericssonbasicapi2.azure-api.net/collection'),
-  }
+    baseURL: process.env.TEST_COLLECTION_BASE_URL || 'https://ericssonbasicapi2.azure-api.net/collection/v1_0',
+    authBaseURL: process.env.TEST_COLLECTION_AUTH_BASE_URL || 'https://ericssonbasicapi2.azure-api.net/collection',
+  };
   const account = new Account(accountConfig);
 
   describe('methods', () => {
@@ -26,14 +25,17 @@ describe('Account', () => {
         expect(account.lastModified).not.toBe(undefined);
 
         if (account.lastModified) {
-          const requestInterceptor = axios.interceptors.request.use((config) => {
-            if (config.method === 'GET') {
-              expect(config.url).toBe(`${accountConfig.baseURL}/account/balance`);
-            }
-            return config;
-          }, (error) => {
-            return Promise.reject(error);
-          });
+          const requestInterceptor = axios.interceptors.request.use(
+            config => {
+              if (config.method === 'GET') {
+                expect(config.url).toBe(`${accountConfig.baseURL}/account/balance`);
+              }
+              return config;
+            },
+            error => {
+              return Promise.reject(error);
+            },
+          );
 
           const details = await account.getDetails(true);
 
@@ -46,12 +48,15 @@ describe('Account', () => {
         expect(account.lastModified).not.toBe(undefined);
 
         if (account.lastModified) {
-          const requestInterceptor = axios.interceptors.request.use((config) => {
-            expect(config.url).not.toBe(`${accountConfig.baseURL}/account/balance`);
-            return config;
-          }, (error) => {
-            return Promise.reject(error);
-          });
+          const requestInterceptor = axios.interceptors.request.use(
+            config => {
+              expect(config.url).not.toBe(`${accountConfig.baseURL}/account/balance`);
+              return config;
+            },
+            error => {
+              return Promise.reject(error);
+            },
+          );
 
           const details = await account.getDetails();
 

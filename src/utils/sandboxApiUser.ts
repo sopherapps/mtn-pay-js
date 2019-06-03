@@ -4,10 +4,10 @@ import { generate as uuidv4 } from 'uuidjs';
 import getResources, { IResource } from './repository';
 
 export interface ISandboxApiUserDetails {
-  apiKey: string,
-  providerCallbackHost: string,
-  targetEnvironment: string,
-  referenceId: string
+  apiKey: string;
+  providerCallbackHost: string;
+  targetEnvironment: string;
+  referenceId: string;
 }
 
 /**
@@ -27,16 +27,15 @@ export default class SandboxApiUser {
   private apiuserResource: IResource;
   private apikeyResource: IResource;
 
-  constructor(
-    { baseURL = 'https://ericssonbasicapi2.azure-api.net/v1_0',
-      subscriptionKey,
-      providerCallbackHost = ''
-    }:
-      {
-        baseURL?: string,
-        subscriptionKey: string,
-        providerCallbackHost?: string
-      }) {
+  constructor({
+    baseURL = 'https://ericssonbasicapi2.azure-api.net/v1_0',
+    subscriptionKey,
+    providerCallbackHost = '',
+  }: {
+    baseURL?: string;
+    subscriptionKey: string;
+    providerCallbackHost?: string;
+  }) {
     this.referenceId = uuidv4();
     this.providerCallbackHost = providerCallbackHost;
 
@@ -57,11 +56,10 @@ export default class SandboxApiUser {
    */
   public async initialize() {
     const headers = {
-      'X-Reference-Id': this.referenceId
-    }
+      'X-Reference-Id': this.referenceId,
+    };
     try {
-      return await this.apiuserResource.create(
-        { "providerCallbackHost": this.providerCallbackHost }, headers);
+      return await this.apiuserResource.create({ providerCallbackHost: this.providerCallbackHost }, headers);
     } catch (error) {
       throw error;
     }
@@ -73,7 +71,6 @@ export default class SandboxApiUser {
    * @returns {Promise<ISandboxApiUserDetails>}
    */
   public async getUser(): Promise<ISandboxApiUserDetails> {
-
     if (!this.apiKey) {
       await this.getRemoteApiKey();
     }

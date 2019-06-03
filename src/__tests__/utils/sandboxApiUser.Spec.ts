@@ -1,4 +1,4 @@
-import SandboxApiUser from "../../utils/sandboxApiUser";
+import SandboxApiUser from '../../utils/sandboxApiUser';
 
 describe('sandboxApiUser', () => {
   it('requires process environment variables TEST_BASE_URL, TEST_SUBSCRIPTION_KEY', () => {
@@ -8,8 +8,7 @@ describe('sandboxApiUser', () => {
 
   describe('methods', () => {
     const subscriptionKey = process.env.TEST_SUBSCRIPTION_KEY_FOR_DISBURSEMENTS || '';
-    const baseURL = (process.env.TEST_BASE_URL ||
-      'https://ericssonbasicapi2.azure-api.net/v1_0');
+    const baseURL = process.env.TEST_BASE_URL || 'https://ericssonbasicapi2.azure-api.net/v1_0';
     const callbackUrl = '';
 
     const sandboxApiUser = new SandboxApiUser({ baseURL, subscriptionKey });
@@ -17,11 +16,11 @@ describe('sandboxApiUser', () => {
     describe('initialize', () => {
       it('Makes a POST request to the "apiuser" resource endpoint\
        and returns a status of 201', async () => {
-          const response: any = await sandboxApiUser.initialize();
-          expect(response).toMatchObject({
-            status: 201
-          });
+        const response: any = await sandboxApiUser.initialize();
+        expect(response).toMatchObject({
+          status: 201,
         });
+      });
     });
 
     describe('getUser', () => {
