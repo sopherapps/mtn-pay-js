@@ -1,4 +1,4 @@
-jest.retryTimes(3);
+jest.retryTimes(5);
 
 process.env.TEST_BASE_URL = "The base url for the MTN Mobile money Open API sandbox";
 
