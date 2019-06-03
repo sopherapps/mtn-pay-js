@@ -7,20 +7,19 @@ describe('sandboxApiUser', () => {
   });
 
   describe('methods', () => {
-    const subscriptionKey = process.env.TEST_SUBSCRIPTION_KEY_FOR_DISBURSEMENTS || '';
+    const subscriptionKey = process.env.TEST_SUBSCRIPTION_KEY_FOR_COLLECTIONS || '';
     const baseURL = process.env.TEST_BASE_URL || 'https://ericssonbasicapi2.azure-api.net/v1_0';
-    const callbackUrl = '';
 
     const sandboxApiUser = new SandboxApiUser({ baseURL, subscriptionKey });
 
     describe('initialize', () => {
       it('Makes a POST request to the "apiuser" resource endpoint\
        and returns a status of 201', async () => {
-        const response: any = await sandboxApiUser.initialize();
-        expect(response).toMatchObject({
-          status: 201,
+          const response: any = await sandboxApiUser.initialize();
+          expect(response).toMatchObject({
+            status: 201,
+          });
         });
-      });
     });
 
     describe('getUser', () => {

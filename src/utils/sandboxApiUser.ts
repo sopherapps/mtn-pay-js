@@ -30,7 +30,7 @@ export default class SandboxApiUser {
   constructor({
     baseURL = 'https://ericssonbasicapi2.azure-api.net/v1_0',
     subscriptionKey,
-    providerCallbackHost = '',
+    providerCallbackHost = 'https://example.com',
   }: {
     baseURL?: string;
     subscriptionKey: string;

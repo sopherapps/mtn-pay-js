@@ -1,7 +1,7 @@
 import PaymentRequest, { IPaymentRequestConfig, IPayer, IStatus, Status } from '../../utils/paymentRequest';
 import { generate as uuidv4 } from 'uuidjs';
 
-const requestTimeout = 5000;
+const requestTimeout = 40000;
 
 describe('PaymentRequest', () => {
   const payer: IPayer = {

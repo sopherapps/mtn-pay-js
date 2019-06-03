@@ -8,6 +8,7 @@ install:
 
 before_script:
   - touch testSetup.ts
+  - echo "jest.retryTimes(3);" > testSetup.ts
 
 script:
   - npm run test

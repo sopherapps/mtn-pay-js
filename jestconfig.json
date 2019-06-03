@@ -13,5 +13,6 @@
   ],
   "setupFiles": [
     "./testSetup.ts"
-  ]
+  ],
+  "testRunner": "jest-circus/runner"
 }

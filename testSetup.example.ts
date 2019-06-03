@@ -1,3 +1,5 @@
+jest.retryTimes(3);
+
 process.env.TEST_BASE_URL = "The base url for the MTN Mobile money Open API sandbox";
 
 process.env.TEST_API_USER_ID = "This can be generated using this very package using sandboxApiUser, the referenceId property";
