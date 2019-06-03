@@ -12,50 +12,25 @@ export interface ISandboxApiUserDetails {
 
 /**
  * @class SandboxApiUser
+ * @property {string} apiKey
+ * @property {string} providerCallbackHost
+ * @property {string} targetEnvironment
+ * @property {string} referenceId
+ * @async @method initialize()
+ * @async @method getUser()
  */
 export default class SandboxApiUser {
-  /**
-   * @property apiKey
-   * @type string
-   */
   public apiKey: string = '';
-
-  /**
-   * @property providerCallbackHost
-   * @type string
-   */
   public providerCallbackHost: string = '';
-
-  /**
-   * @property targetEnvironment
-   * @type string
-   */
   public targetEnvironment: string = '';
-
-  /**
-   * @property details
-   * @type any
-   */
   public referenceId: string;
-
-  /**
-   * @private
-   * @property apiuserResource
-   * @interface resourcesObject
-   */
   private apiuserResource: IResource;
-
-  /**
-   * @private
-   * @property apikeyResource
-   * @interface resourcesObject
-   */
   private apikeyResource: IResource;
 
   constructor(
     { baseURL = 'https://ericssonbasicapi2.azure-api.net/v1_0',
       subscriptionKey,
-      providerCallbackHost = 'http://example.com'
+      providerCallbackHost = ''
     }:
       {
         baseURL?: string,
@@ -86,7 +61,7 @@ export default class SandboxApiUser {
     }
     try {
       return await this.apiuserResource.create(
-        { "providerCallbackHost": 'http://example.com' }, headers);
+        { "providerCallbackHost": this.providerCallbackHost }, headers);
     } catch (error) {
       throw error;
     }

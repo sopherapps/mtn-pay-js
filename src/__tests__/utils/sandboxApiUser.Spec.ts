@@ -3,12 +3,15 @@ import SandboxApiUser from "../../utils/sandboxApiUser";
 describe('sandboxApiUser', () => {
   it('requires process environment variables TEST_BASE_URL, TEST_SUBSCRIPTION_KEY', () => {
     expect(process.env).toHaveProperty('TEST_BASE_URL');
-    expect(process.env).toHaveProperty('TEST_SUBSCRIPTION_KEY');
+    expect(process.env).toHaveProperty('TEST_SUBSCRIPTION_KEY_FOR_DISBURSEMENTS');
   });
 
   describe('methods', () => {
-    const subscriptionKey = process.env.TEST_SUBSCRIPTION_KEY || '';
-    const baseURL = process.env.TEST_BASE_URL || 'https://ericssonbasicapi2.azure-api.net/v1_0';
+    const subscriptionKey = process.env.TEST_SUBSCRIPTION_KEY_FOR_DISBURSEMENTS || '';
+    const baseURL = (process.env.TEST_BASE_URL ||
+      'https://ericssonbasicapi2.azure-api.net/v1_0');
+    const callbackUrl = '';
+
     const sandboxApiUser = new SandboxApiUser({ baseURL, subscriptionKey });
 
     describe('initialize', () => {

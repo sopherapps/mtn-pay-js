@@ -15,7 +15,8 @@ describe('Account', () => {
     });
 
     describe('queryApi', () => {
-      it('Makes a query to the API and returns the currency and the availableBalance', () => { });
+      it('Makes a query to the API and returns the currency and \
+      the availableBalance', () => { });
     });
   });
 });
