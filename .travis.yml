@@ -1,0 +1,14 @@
+language: node_js
+
+node_js:
+  - "10"
+
+install:
+  - npm install
+
+before_script:
+  - touch testSetup.ts
+  - echo "jest.retryTimes(5);" > testSetup.ts
+
+script:
+  - npm run test

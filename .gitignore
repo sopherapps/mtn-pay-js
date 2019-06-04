@@ -62,3 +62,6 @@ typings/
 
 # The auto-generated build files
 /lib
+
+# the jest test setup file with secrets
+testSetup.ts
