@@ -37,7 +37,7 @@ __Each product is subscribed to separately and you get a separate subscription k
 
 The __mtn-pay__ package exposes four entities you can work with:
 
-### 1. sandboxApiUser
+### 1. SandboxApiUser
 
 > For programmatically generating __API USER ID__ and __API USER KEY__ for sandbox testing.
 
@@ -62,7 +62,7 @@ The __mtn-pay__ package exposes four entities you can work with:
 
     ```
 
-Use the __sandboxApiUser__ to generate an __API user ID__ and __API Key__ when working with the sandbox. You will need these to access any of the other products. Ideally, you will use this entity before the others.
+Use the __SandboxApiUser__ to generate an __API user ID__ and __API Key__ when working with the sandbox. You will need these to access any of the other products. Ideally, you will use this entity before the others.
 
 __For the production environment, the API user ID and API Key are obtained through the 'Merchant Portal' as referred to in the [official API docs](https://momodeveloper.mtn.com/api-documentation/api-description/)__
 
@@ -156,6 +156,18 @@ __For the production environment, the API user ID and API Key are obtained throu
                reason
            } = details;
         }
+    ```
+
+### 4. Core
+
+> For any future transaction types or if you want to extend the BaseProduct class
+
+    ```typescript
+    import { BaseProduct, IApiToken } from 'mtn-pay/lib/core';
+
+    export class ChildProduct extends BaseProduct {
+        // ...
+    }
     ```
 
 ## Running Tests
