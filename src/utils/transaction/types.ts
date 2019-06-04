@@ -44,27 +44,27 @@ export enum Status {
   UNINITIALIZED = 'UNINITIALIZED',
 }
 
-export enum transactionTypes {
+export enum TransactionTypes {
   COLLECTION = 'collection',
   DISBURSEMENT = 'disbursement',
   REMITTANCE = 'remittance',
 }
 
-export enum resourceUrls {
+export enum ResourceUrls {
   COLLECTION = 'requesttopay',
   DISBURSEMENT = 'transfer',
   REMITTANCE = 'transfer',
 }
 
-export enum receipientTypes {
+export enum ReceipientTypes {
   PAYER = 'payer',
   PAYEE = 'payee',
 }
 
-export enum transactionReceipientTypes {
-  COLLECTION = receipientTypes.PAYER,
-  DISBURSEMENT = receipientTypes.PAYEE,
-  REMITTANCE = receipientTypes.PAYER,
+export enum TransactionReceipientTypes {
+  COLLECTION = ReceipientTypes.PAYER,
+  DISBURSEMENT = ReceipientTypes.PAYEE,
+  REMITTANCE = ReceipientTypes.PAYER,
 }
 
 export interface ITransactionDetails {

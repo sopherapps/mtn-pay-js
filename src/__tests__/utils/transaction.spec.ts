@@ -1,6 +1,6 @@
 import { generate as uuidv4 } from 'uuidjs';
 import Transaction, { transactionReceipientTypesMap, resourceUrlsMap } from '../../utils/transaction/main';
-import { IRecepient, ITransactionConfig, Status, transactionTypes } from '../../utils/transaction/types';
+import { IRecepient, ITransactionConfig, Status, TransactionTypes } from '../../utils/transaction/types';
 
 export const testAnyTransactionType = (transactionType: string, requestTimeout = 40000) => {
   describe(`${transactionType}`, () => {
@@ -111,6 +111,6 @@ export const testAnyTransactionType = (transactionType: string, requestTimeout =
   });
 };
 
-testAnyTransactionType(transactionTypes.COLLECTION);
-testAnyTransactionType(transactionTypes.DISBURSEMENT);
-testAnyTransactionType(transactionTypes.REMITTANCE);
+testAnyTransactionType(TransactionTypes.COLLECTION);
+testAnyTransactionType(TransactionTypes.DISBURSEMENT);
+testAnyTransactionType(TransactionTypes.REMITTANCE);
