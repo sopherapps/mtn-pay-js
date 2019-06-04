@@ -182,11 +182,9 @@ export default class Transaction extends BaseProduct {
     const startingTime = new Date();
     let lastCalled = new Date();
 
-    let httpResponse: AxiosResponse<any> = await this.transactionResource.getOne(
-      this.referenceId, headers);
+    let httpResponse: AxiosResponse<any> = await this.transactionResource.getOne(this.referenceId, headers);
 
     while (this.secondsSince(startingTime) < timeoutInSeconds) {
-
       if (this.secondsSince(lastCalled) >= intervalInSeconds) {
         lastCalled = new Date();
         httpResponse = await this.transactionResource.getOne(this.referenceId, headers);
@@ -196,14 +194,14 @@ export default class Transaction extends BaseProduct {
         timedOut = false;
         break;
       }
-    };
+    }
 
     if (timedOut) {
       httpResponse.data.reason = {
         code: 'TIMEOUT',
         message: `The timeout of ${this.timeout}ms for this ${
           this.transactionType
-          } object was exceeded. Increase it if you must.`,
+        } object was exceeded. Increase it if you must.`,
       };
     }
 

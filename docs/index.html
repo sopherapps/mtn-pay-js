@@ -1021,6 +1021,7 @@ img { max-width: 100%; }
         apiuserId: <span class="hljs-string">'Your Api user ID'</span>,
         apiKey: <span class="hljs-string">'Your Api  user key'</span>,
         timeout: <span class="hljs-number">35000</span>, <span class="hljs-comment">// the time in milliseconds for polling status to time out; default: 35000</span>
+        interval: <span class="hljs-number">31000</span>, <span class="hljs-comment">// the interval at which status is polled in ms: defaults to 30000; never goes below 30000</span>
         baseURL: <span class="hljs-string">'The baseURL of the API. Get it from the official API docs'</span>,
         authBaseURL: <span class="hljs-string">'The baseURL of the /token endpoint for the given product'</span>, <span class="hljs-comment">// Go to API docs</span>
         resourceUrl: resourceUrlsMap[transactionType],

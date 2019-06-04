@@ -1,6 +1,6 @@
 {
   "name": "mtn-pay",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A TypeScript package to allow paying with MTN Mobile Money",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
