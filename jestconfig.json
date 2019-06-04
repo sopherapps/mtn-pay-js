@@ -11,6 +11,23 @@
     "json",
     "node"
   ],
+  "coverageDirectory": "testcoverage",
+  "coveragePathIgnorePatterns": [
+    "/node_modules/",
+    "/docs/",
+    "/lib",
+    "testcoverage",
+    "testSetup"
+  ],
+  "collectCoverageFrom": [
+    "**/*.{js,jsx,ts,tsx}",
+    "!**/node_modules/**",
+    "!**/vendor/**",
+    "!**/__tests__/**",
+    "!**/docs/**",
+    "!**/lib/**",
+    "!**/testcoverage/**"
+  ],
   "setupFiles": [
     "./testSetup.ts"
   ],

@@ -14,7 +14,8 @@
     "preversion": "npm run lint",
     "version": "npm run format && npm run typedoc && git add -A src && git add -A docs",
     "postversion": "git push && git push --tags",
-    "typedoc": "typedoc --out docs src --theme minimal"
+    "typedoc": "typedoc --out docs src --theme minimal",
+    "coveralls": "jest --coverage --config jestconfig.json && cat ./testcoverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
@@ -34,6 +35,7 @@
   "homepage": "https://github.com/sopherapps/mtn-pay-js#readme",
   "devDependencies": {
     "@types/jest": "^24.0.13",
+    "coveralls": "^3.0.3",
     "jest": "^24.8.0",
     "jest-circus": "^24.8.0",
     "prettier": "^1.17.1",
