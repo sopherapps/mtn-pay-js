@@ -65,3 +65,6 @@ typings/
 
 # the jest test setup file with secrets
 testSetup.ts
+
+# testcoverage
+testcoverage

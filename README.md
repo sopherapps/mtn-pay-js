@@ -1,4 +1,4 @@
-# mtn-pay-js [![Build Status](https://travis-ci.org/sopherapps/mtn-pay-js.svg?branch=master)](https://travis-ci.org/sopherapps/mtn-pay-js)
+# mtn-pay-js [![Build Status](https://travis-ci.org/sopherapps/mtn-pay-js.svg?branch=master)](https://travis-ci.org/sopherapps/mtn-pay-js) [![Coverage Status](https://coveralls.io/repos/github/sopherapps/mtn-pay-js/badge.svg?branch=master)](https://coveralls.io/github/sopherapps/mtn-pay-js?branch=master)
 
 An unofficial JavaScript/Typescript client package for querying the MTN Mobile Money API
 
