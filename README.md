@@ -8,9 +8,9 @@ This is Typescript package that can be used in any of your favorite frameworks l
 
 Install it as usual:
 
-    ```bash
-    npm install --save mtn-pay
-    ```
+```bash
+npm install --save mtn-pay
+```
 
 ## Usage
 
@@ -41,7 +41,7 @@ The __mtn-pay__ package exposes four entities you can work with:
 
 > For programmatically generating __API USER ID__ and __API USER KEY__ for sandbox testing.
 
-    ```typescript
+```typescript
     import SandboxApiUser from 'mtn-pay/lib/sandboxApiUser';
 
     const baseURL = "https://ericssonbasicapi2.azure-api.net/v1_0"; // or some other, check the docs
@@ -60,7 +60,7 @@ The __mtn-pay__ package exposes four entities you can work with:
         return { apiKey, apiUserId};
     }
 
-    ```
+```
 
 Use the __SandboxApiUser__ to generate an __API user ID__ and __API Key__ when working with the sandbox. You will need these to access any of the other products. Ideally, you will use this entity before the others.
 
@@ -70,7 +70,7 @@ __For the production environment, the API user ID and API Key are obtained throu
 
 > For getting the __balance__ and the __currency__ of your merchant account for a given product i.e. 'collection', 'disbursement' or 'remittance'
 
-    ```typescript
+```typescript
     import Account, { IAccountConfig, AccountTypes }  from 'mtn-pay/lib/account';
 
     const accountConfig: IAccountConfig = {
@@ -92,13 +92,13 @@ __For the production environment, the API user ID and API Key are obtained throu
         const balance = details.balance;
         const currency = details.currency;
     }
-    ```
+```
 
 ### 3. Transaction
 
 > To create a transaction whether it is to request for payment or to disburse money to another person.
 
-    ```typescript
+```typescript
     import Transaction, {
         IStatus,
         ITransactionBody,
@@ -156,19 +156,19 @@ __For the production environment, the API user ID and API Key are obtained throu
                reason
            } = details;
         }
-    ```
+```
 
 ### 4. Core
 
 > For any future transaction types or if you want to extend the BaseProduct class
 
-    ```typescript
+```typescript
     import { BaseProduct, IApiToken } from 'mtn-pay/lib/core';
 
     export class ChildProduct extends BaseProduct {
         // ...
     }
-    ```
+```
 
 ## Advanced Docs
 
