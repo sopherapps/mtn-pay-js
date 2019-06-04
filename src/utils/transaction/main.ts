@@ -5,28 +5,26 @@ import { generate as uuidv4 } from 'uuidjs';
 import getResources, { IResource } from '../repository';
 import { BaseProduct } from '../sharedTypes';
 import {
-  receipientTypes,
-  resourceUrls,
-  Status,
-  transactionReceipientTypes,
-  transactionTypes,
-  IRecepient,
   IStatus,
   ITransactionBody,
   ITransactionConfig,
   ITransactionDetails,
+  ReceipientTypes,
+  ResourceUrls,
+  Status,
+  TransactionTypes,
 } from './types';
 
 export const resourceUrlsMap: { [index: string]: string } = {
-  collection: resourceUrls.COLLECTION,
-  disbursement: resourceUrls.DISBURSEMENT,
-  remittance: resourceUrls.REMITTANCE,
+  collection: ResourceUrls.COLLECTION,
+  disbursement: ResourceUrls.DISBURSEMENT,
+  remittance: ResourceUrls.REMITTANCE,
 };
 
 export const transactionReceipientTypesMap: { [index: string]: string } = {
-  collection: receipientTypes.PAYER,
-  disbursement: receipientTypes.PAYEE,
-  remittance: receipientTypes.PAYEE,
+  collection: ReceipientTypes.PAYER,
+  disbursement: ReceipientTypes.PAYEE,
+  remittance: ReceipientTypes.PAYEE,
 };
 
 /**
@@ -47,14 +45,15 @@ export default class Transaction extends BaseProduct {
     reason: '',
     text: Status.UNINITIALIZED,
   };
+  protected receipientType: string;
+  protected transactionType: string;
   private timeout: number;
   private transactionResource: IResource;
   private requestBody: ITransactionBody;
   private details: ITransactionDetails | undefined;
-  protected receipientType: string;
-  protected transactionType: string;
 
-  constructor(transactionType: string = transactionTypes.COLLECTION, config: ITransactionConfig) {
+
+  constructor(transactionType: string = TransactionTypes.COLLECTION, config: ITransactionConfig) {
     super({
       ...config,
       authBaseURL: config.authBaseURL || `https://ericssonbasicapi2.azure-api.net/${transactionType}`,
@@ -63,7 +62,7 @@ export default class Transaction extends BaseProduct {
     this.referenceId = uuidv4();
     // the safer receipient default is yourself!!!
     this.receipientType =
-      config.receipientType || transactionReceipientTypesMap[transactionType] || receipientTypes.PAYER;
+      config.receipientType || transactionReceipientTypesMap[transactionType] || ReceipientTypes.PAYER;
     this.transactionType = transactionType;
     const resourceUrl = config.resourceUrl || resourceUrlsMap[transactionType] || resourceUrlsMap.collection;
 
@@ -74,7 +73,7 @@ export default class Transaction extends BaseProduct {
       payeeNote: config.payeeNote || '',
       payerMessage: config.payerMessage || '',
     };
-    if (this.receipientType === receipientTypes.PAYEE) {
+    if (this.receipientType === ReceipientTypes.PAYEE) {
       this.requestBody.payee = config.receipient;
     } else {
       this.requestBody.payer = config.receipient;
@@ -151,9 +150,9 @@ export default class Transaction extends BaseProduct {
     const tmp = { ...this.details, ...arguments[0] };
 
     if (tmp) {
-      let keyToRemove = receipientTypes.PAYEE;
-      if (this.receipientType === receipientTypes.PAYEE) {
-        keyToRemove = receipientTypes.PAYER;
+      let keyToRemove = ReceipientTypes.PAYEE;
+      if (this.receipientType === ReceipientTypes.PAYEE) {
+        keyToRemove = ReceipientTypes.PAYER;
       }
       delete tmp[keyToRemove];
     }
@@ -188,7 +187,7 @@ export default class Transaction extends BaseProduct {
         code: 'TIMEOUT',
         message: `The timeout of ${this.timeout}ms for this ${
           this.transactionType
-        } object was exceeded. Increase it if you must.`,
+          } object was exceeded. Increase it if you must.`,
       };
     }
 

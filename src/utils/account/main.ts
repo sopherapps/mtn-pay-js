@@ -1,21 +1,8 @@
-/// https://ericssonbasicapi2.azure-api.net/collection/v1_0/account/balance
+/// https://ericssonbasicapi2.azure-api.net/${accountType}/v1_0/account/balance
 
-import getResources, { IResource } from './repository';
-import { BaseProduct } from './sharedTypes';
-
-export interface IAccountConfig {
-  subscriptionKey: string;
-  targetEnvironment?: string;
-  apiuserId: string;
-  apiKey: string;
-  authBaseURL?: string;
-  baseURL?: string;
-}
-
-export interface IAccountDetails {
-  balance: number;
-  currency: string;
-}
+import getResources, { IResource } from '../repository';
+import { BaseProduct } from '../sharedTypes';
+import { IAccountConfig, IAccountDetails } from './types';
 
 /**
  * @class Account()
@@ -28,12 +15,12 @@ export default class Account extends BaseProduct {
   private details: IAccountDetails | undefined;
   private accountResource: IResource;
 
-  constructor(config: IAccountConfig) {
+  constructor(accountType: string, config: IAccountConfig) {
     super({
       ...config,
-      authBaseURL: config.authBaseURL || 'https://ericssonbasicapi2.azure-api.net/collection',
+      authBaseURL: config.authBaseURL || `https://ericssonbasicapi2.azure-api.net/${accountType}`,
     });
-    const baseURL = config.baseURL || 'https://ericssonbasicapi2.azure-api.net/collection/v1_0';
+    const baseURL = config.baseURL || `https://ericssonbasicapi2.azure-api.net/${accountType}/v1_0`;
 
     const accountUrl = 'account';
     this.accountResource = getResources([accountUrl], baseURL, this.commonHeaders)[accountUrl];

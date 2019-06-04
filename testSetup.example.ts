@@ -1,6 +1,18 @@
 jest.retryTimes(5);
 
 process.env.TEST_BASE_URL = "The base url for the MTN Mobile money Open API sandbox";
+process.env.TEST_COLLECTION_BASE_URL = (
+  "The base url for  the collections product");
+process.env.TEST_COLLECTION_AUTH_BASE_URL = (
+  "The base url for the token endpoint of the collections product");
+process.env.TEST_DISBURSEMENT_BASE_URL = (
+  "The base url for the disbursement product");
+process.env.TEST_DISBURSEMENT_AUTH_BASE_URL = (
+  "The base url for the token endpoint of the disbursement product");
+process.env.TEST_REMITTANCE_BASE_URL = (
+  "The base url for the remittance product");
+process.env.TEST_REMITTANCE_AUTH_BASE_URL = (
+  "The base url for the token endpoint for the remittance product");
 
 process.env.TEST_API_USER_ID = "This can be generated using this very package using sandboxApiUser, the referenceId property";
 process.env.TEST_API_KEY = "This can be generated using this very package using sandboxApiUser, the apiKey property"
