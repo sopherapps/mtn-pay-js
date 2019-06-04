@@ -49,7 +49,9 @@ export default class Transaction extends BaseProduct {
   };
   protected receipientType: string;
   protected transactionType: string;
-  private timeout: number;
+  private timeout: number = 35000;
+  // poll after 30 seconds by default
+  private interval: number = 30000;
   private transactionResource: IResource;
   private requestBody: ITransactionBody;
   private details: ITransactionDetails | undefined;
@@ -80,9 +82,12 @@ export default class Transaction extends BaseProduct {
       this.requestBody.payer = config.receipient;
     }
 
-    this.timeout = config.timeout || 35000;
-    const baseURL = config.baseURL || `https://ericssonbasicapi2.azure-api.net/${transactionType}/v1_0`;
+    this.timeout = config.timeout || this.timeout;
+    this.interval = config.interval || this.interval;
+    // this.interval should never be below 30 seconds
+    this.interval = Math.max(this.interval, 30000);
 
+    const baseURL = config.baseURL || `https://ericssonbasicapi2.azure-api.net/${transactionType}/v1_0`;
     this.transactionResource = getResources([resourceUrl], baseURL, this.commonHeaders)[resourceUrl];
   }
 
@@ -172,23 +177,33 @@ export default class Transaction extends BaseProduct {
     const headers = {
       Authorization: `Bearer ${this.apiToken ? this.apiToken.accessToken : ''}`,
     };
+    const timeoutInSeconds = this.timeout / 1000;
+    const intervalInSeconds = this.interval / 1000;
     const startingTime = new Date();
-    let httpResponse: AxiosResponse<any>;
+    let lastCalled = new Date();
 
-    do {
-      httpResponse = await this.transactionResource.getOne(this.referenceId, headers);
+    let httpResponse: AxiosResponse<any> = await this.transactionResource.getOne(
+      this.referenceId, headers);
+
+    while (this.secondsSince(startingTime) < timeoutInSeconds) {
+
+      if (this.secondsSince(lastCalled) >= intervalInSeconds) {
+        lastCalled = new Date();
+        httpResponse = await this.transactionResource.getOne(this.referenceId, headers);
+      }
+
       if (httpResponse.data.status !== Status.PENDING) {
         timedOut = false;
         break;
       }
-    } while (this.secondsSince(startingTime) < this.timeout / 1000);
+    };
 
     if (timedOut) {
       httpResponse.data.reason = {
         code: 'TIMEOUT',
         message: `The timeout of ${this.timeout}ms for this ${
           this.transactionType
-        } object was exceeded. Increase it if you must.`,
+          } object was exceeded. Increase it if you must.`,
       };
     }
 

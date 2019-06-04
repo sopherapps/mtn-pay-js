@@ -131,6 +131,7 @@ __For the production environment, the API user ID and API Key are obtained throu
         apiuserId: 'Your Api user ID',
         apiKey: 'Your Api  user key',
         timeout: 35000, // the time in milliseconds for polling status to time out; default: 35000
+        interval: 31000, // the interval at which status is polled in ms: defaults to 30000; never goes below 30000
         baseURL: 'The baseURL of the API. Get it from the official API docs',
         authBaseURL: 'The baseURL of the /token endpoint for the given product', // Go to API docs
         resourceUrl: resourceUrlsMap[transactionType],
