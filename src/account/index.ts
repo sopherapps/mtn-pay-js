@@ -1,8 +1,11 @@
 /// https://ericssonbasicapi2.azure-api.net/${accountType}/v1_0/account/balance
 
-import getResources, { IResource } from '../repository';
-import { BaseProduct } from '../sharedTypes';
+import { BaseProduct } from '../core';
+import getResources, { IResource } from '../utils/repository';
 import { IAccountConfig, IAccountDetails } from './types';
+
+
+export * from './types';
 
 /**
  * @class Account()

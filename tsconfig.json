@@ -12,5 +12,13 @@
   "exclude": [
     "node_modules",
     "**/__tests__/**"
-  ]
+  ],
+  "typedocOptions": {
+    "mode": "modules",
+    "out": "docs",
+    "exclude": [
+      "node_modules",
+      "**/__tests__/**"
+    ]
+  }
 }

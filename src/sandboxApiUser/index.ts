@@ -1,14 +1,10 @@
 /// https://ericssonbasicapi2.azure-api.net/v1_0/apiuser
 
 import { generate as uuidv4 } from 'uuidjs';
-import getResources, { IResource } from './repository';
+import getResources, { IResource } from '../utils/repository';
+import { ISandboxApiUserDetails } from './types';
 
-export interface ISandboxApiUserDetails {
-  apiKey: string;
-  providerCallbackHost: string;
-  targetEnvironment: string;
-  referenceId: string;
-}
+export * from './types';
 
 /**
  * @class SandboxApiUser

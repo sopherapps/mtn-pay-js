@@ -1,6 +1,12 @@
 import { generate as uuidv4 } from 'uuidjs';
-import Transaction, { transactionReceipientTypesMap, resourceUrlsMap } from '../../utils/transaction/main';
-import { IRecepient, ITransactionConfig, Status, TransactionTypes } from '../../utils/transaction/types';
+import Transaction, {
+  transactionReceipientTypesMap,
+  resourceUrlsMap,
+  IRecepient,
+  ITransactionConfig,
+  Status,
+  TransactionTypes,
+} from '../transaction';
 
 export const testAnyTransactionType = (transactionType: string, requestTimeout = 40000) => {
   describe(`${transactionType}`, () => {

@@ -2,8 +2,8 @@
 
 import { AxiosResponse } from 'axios';
 import { generate as uuidv4 } from 'uuidjs';
-import getResources, { IResource } from '../repository';
-import { BaseProduct } from '../sharedTypes';
+import { BaseProduct } from '../core';
+import getResources, { IResource } from '../utils/repository';
 import {
   IStatus,
   ITransactionBody,
@@ -14,6 +14,8 @@ import {
   Status,
   TransactionTypes,
 } from './types';
+
+export * from './types';
 
 export const resourceUrlsMap: { [index: string]: string } = {
   collection: ResourceUrls.COLLECTION,
@@ -51,7 +53,6 @@ export default class Transaction extends BaseProduct {
   private transactionResource: IResource;
   private requestBody: ITransactionBody;
   private details: ITransactionDetails | undefined;
-
 
   constructor(transactionType: string = TransactionTypes.COLLECTION, config: ITransactionConfig) {
     super({

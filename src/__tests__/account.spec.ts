@@ -1,6 +1,5 @@
 import axios from 'axios';
-import Account from '../../utils/account/main';
-import { IAccountConfig, AccountTypes } from '../../utils/account/types';
+import Account, { IAccountConfig, AccountTypes } from '../account';
 
 const testAllAccountTypes = (accountType: string) => {
   describe(`Account type: ${accountType}`, () => {

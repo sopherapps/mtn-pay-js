@@ -1,4 +1,4 @@
-import SandboxApiUser from '../../utils/sandboxApiUser';
+import SandboxApiUser from '../sandboxApiUser';
 
 describe('sandboxApiUser', () => {
   it('requires process environment variables TEST_BASE_URL, TEST_SUBSCRIPTION_KEY', () => {

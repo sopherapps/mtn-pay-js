@@ -1,13 +1,7 @@
-import getResources, { IResource } from './repository';
+import getResources, { IResource } from '../utils/repository';
+import { IApiToken } from './types';
 
-/// Shared Types
-
-export interface IApiToken {
-  accessToken: string;
-  tokenType: string;
-  expiresIn: number;
-  createdAt: Date;
-}
+export * from './types';
 
 /**
  * Base class for all products including account,
