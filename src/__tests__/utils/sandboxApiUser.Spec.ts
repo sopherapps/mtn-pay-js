@@ -15,11 +15,11 @@ describe('sandboxApiUser', () => {
     describe('initialize', () => {
       it('Makes a POST request to the "apiuser" resource endpoint\
        and returns a status of 201', async () => {
-          const response: any = await sandboxApiUser.initialize();
-          expect(response).toMatchObject({
-            status: 201,
-          });
+        const response: any = await sandboxApiUser.initialize();
+        expect(response).toMatchObject({
+          status: 201,
         });
+      });
     });
 
     describe('getUser', () => {
