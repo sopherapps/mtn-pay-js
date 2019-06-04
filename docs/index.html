@@ -916,6 +916,152 @@ img { max-width: 100%; }
 		<div class="tsd-panel tsd-typography">
 			<h1 id="mtn-pay-js-build-status">mtn-pay-js <a href="https://travis-ci.org/sopherapps/mtn-pay-js"><img src="https://travis-ci.org/sopherapps/mtn-pay-js.svg?branch=master" alt="Build Status"></a></h1>
 			<p>An unofficial JavaScript/Typescript client package for querying the MTN Mobile Money API</p>
+			<h2 id="installation">Installation</h2>
+			<p>This is Typescript package that can be used in any of your favorite frameworks like <a href="https://vuejs.org">vuejs</a>, <a href="https://reactjs.org">react</a>, <a href="https://facebook.github.io/react-native/">react-native</a> etc. as long as they use NPM packages.</p>
+			<p>Install it as usual:</p>
+			<pre><code><span class="hljs-string">``</span><span class="hljs-string">`bash
+npm install --save mtn-pay
+`</span><span class="hljs-string">``</span></code></pre><h2 id="usage">Usage</h2>
+			<p><strong>Please refer to the <a href="https://momodeveloper.mtn.com/">official MTN Mobile Money Open API docs</a> for more details of how the API works.</strong></p>
+			<p>According to the <a href="https://momodeveloper.mtn.com/products">docs</a>, MTN Mobile Money API is broken down into four products</p>
+			<dl>
+				<dt>Collections</dt>
+				<dd>to receive payments for goods and services using MTN Mobile Money</dd>
+				<dt>Disbursements</dt>
+				<dd>to send money in bulk to different recipients with just one click</dd>
+				<dt>Collection Widget</dt>
+				<dd>to integrate a checkout button to accept Mobile Money payments on e-commerce sites</dd>
+				<dt>Remittances</dt>
+				<dd>to transfer or receive funds from the diaspora to Mobile Money recipient's account in local currency</dd>
+			</dl>
+			<p>Of the above products, the <strong>Collection Widget</strong> is accessible manually and requires copy and paste (follow the link for the <a href="https://momodeveloper.mtn.com/widget-api">instructions</a>) as opposed to the others which are accessible programmatically.
+			<strong>Each product is subscribed to separately and you get a separate subscription key</strong></p>
+			<p>The <strong>mtn-pay</strong> package exposes four entities you can work with:</p>
+			<h3 id="1-sandboxapiuser">1. SandboxApiUser</h3>
+			<blockquote>
+				<p>For programmatically generating <strong>API USER ID</strong> and <strong>API USER KEY</strong> for sandbox testing.</p>
+			</blockquote>
+			<pre><code>```typescript
+import SandboxApiUser from 'mtn-pay/lib/sandboxApiUser';
+<span class="hljs-built_in">
+const </span>baseURL = <span class="hljs-string">"https://ericssonbasicapi2.azure-api.net/v1_0"</span>; //<span class="hljs-built_in"> or </span>some other,<span class="hljs-built_in"> check </span>the docs<span class="hljs-built_in">
+const </span>subscriptionKey = 'your subscription key for any of the products e.g. <span class="hljs-string">"collection"</span><span class="hljs-built_in"> or </span><span class="hljs-string">"disbursement"</span>';
+//<span class="hljs-built_in"> check </span>your profile at https://momodeveloper.mtn.com/developer for these keys<span class="hljs-built_in"> if </span>you subscribed to any of the products
+<span class="hljs-built_in">
+const </span>sandboxApiUser =<span class="hljs-built_in"> new </span>SandboxApiUser({ baseUR<span class="hljs-class">L, subscriptionKey });</span>
+
+// The methods query the API so they should be 'awaited' for in an async function<span class="hljs-built_in">
+const </span>getCredentials = async () =&gt; {
+   <span class="hljs-built_in"> const </span>response: any = await sandboxApiUser.initialize();
+   <span class="hljs-built_in"> const </span>user: any = await sandboxApiUser.getUser();
+
+   <span class="hljs-built_in"> const </span>apiKey = user.apiKey;
+   <span class="hljs-built_in"> const </span>apiUserId = user.referenceId;
+   <span class="hljs-built_in"> return </span>{ apiKey, apiUserId};
+}
+
+```</code></pre><p>Use the <strong>SandboxApiUser</strong> to generate an <strong>API user ID</strong> and <strong>API Key</strong> when working with the sandbox. You will need these to access any of the other products. Ideally, you will use this entity before the others.</p>
+			<p><strong>For the production environment, the API user ID and API Key are obtained through the &#39;Merchant Portal&#39; as referred to in the <a href="https://momodeveloper.mtn.com/api-documentation/api-description/">official API docs</a></strong></p>
+			<h3 id="2-account">2. Account</h3>
+			<blockquote>
+				<p>For getting the <strong>balance</strong> and the <strong>currency</strong> of your merchant account for a given product i.e. &#39;collection&#39;, &#39;disbursement&#39; or &#39;remittance&#39;</p>
+			</blockquote>
+			<pre><code>```typescript
+<span class="hljs-keyword">import</span> Account, { IAccountConfig, AccountTypes }  from <span class="hljs-string">'mtn-pay/lib/account'</span>;
+
+<span class="hljs-keyword">const</span> accountConfig: IAccountConfig = {
+  subscriptionKey: <span class="hljs-string">'&lt;Your subscription key for a given product whose account you want to check&gt;'</span>,
+  targetEnvironment: <span class="hljs-string">'sandbox or production (get this after you go live in your merchant portal)'</span>,
+  apiuserId: <span class="hljs-string">'your production API User ID or await sandboxApiUser.getUser().referenceId'</span>,
+  apiKey: <span class="hljs-string">'your production API key or await sandboxApiUser.getUser().apiKey'</span>,
+  baseURL: <span class="hljs-string">'your API baseURL for the given product'</span>,
+  authBaseURL:<span class="hljs-string">'the baseURL for the /token/ endpoint for the product you subscribed for'</span>,
+};
+
+<span class="hljs-keyword">const</span> getAccountDetails = <span class="hljs-keyword">async</span> (accountType: string, config: IAccountConfig) =&gt; {
+    <span class="hljs-keyword">const</span> account = <span class="hljs-keyword">new</span> Account(accountType, config);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> account.getDetails();
+}
+<span class="hljs-comment">// AccountTypes {COLLECTION, DISBURSEMENT, REMITTANCE}</span>
+<span class="hljs-keyword">const</span> getCollectionAccountDetails = <span class="hljs-keyword">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> details = <span class="hljs-keyword">await</span> getAccountDetails(AccountTypes.COLLECTION, accountConfig);
+    <span class="hljs-keyword">const</span> balance = details.balance;
+    <span class="hljs-keyword">const</span> currency = details.currency;
+}
+```</code></pre><h3 id="3-transaction">3. Transaction</h3>
+			<blockquote>
+				<p>To create a transaction whether it is to request for payment or to disburse money to another person.</p>
+			</blockquote>
+			<pre><code>```typescript
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">Transaction</span>, {
+    IStatus,
+    ITransactionBody,
+    ITransactionConfig,
+    ITransactionDetails,
+    ReceipientTypes,
+    ResourceUrls,
+    Status,
+    TransactionTypes,
+    IReceipient
+    } <span class="hljs-keyword">from</span> <span class="hljs-string">'mtn-pay/lib/transaction'</span>;
+
+    const receipient: IReceipient = {
+        partyIdType: <span class="hljs-string">'msisdn'</span>,
+        partyId: <span class="hljs-string">'0770000000'</span> // The phone number <span class="hljs-keyword">of</span> receipient <span class="hljs-keyword">of</span> the request, <span class="hljs-keyword">not</span> your own number
+    }
+
+    const TransactionType = TransactionTypes.COLLECTION; 
+    // <span class="hljs-keyword">or</span> TransactionTypes.DISBURSEMENT <span class="hljs-keyword">or</span> TransactionTypes.REMITTANCE
+
+    const transactionConfig: ITransactionConfig = {
+    amount: <span class="hljs-number">100000</span>, //&lt;<span class="hljs-type">money</span> amount <span class="hljs-keyword">to</span> pay <span class="hljs-keyword">or</span> receive&gt;,
+    currency: <span class="hljs-string">'UGX'</span>, // <span class="hljs-keyword">in</span> sandbox, it <span class="hljs-keyword">is</span> <span class="hljs-string">'EUR'</span>
+    externalId: <span class="hljs-string">'your own unique UUID generation 4 Id for easy tracking'</span>,
+    payeeNote: <span class="hljs-string">'A note for the payee'</span>,
+    receipient,
+    payerMessage: <span class="hljs-string">'A message for the payer'</span>,
+    subscriptionKey: <span class="hljs-string">'your subscription key for the given product'</span>,
+    targetEnvironment: <span class="hljs-string">'sandbox or the production one'</span>, // <span class="hljs-keyword">for</span> sandbox, put <span class="hljs-string">'sandbox'</span>
+    apiuserId: <span class="hljs-string">'Your Api user ID'</span>,
+    apiKey: <span class="hljs-string">'Your Api  user key'</span>,
+    timeout: <span class="hljs-number">35000</span>, // the <span class="hljs-type">time</span> <span class="hljs-keyword">in</span> milliseconds <span class="hljs-keyword">for</span> polling status <span class="hljs-keyword">to</span> <span class="hljs-type">time</span> <span class="hljs-keyword">out</span>; <span class="hljs-keyword">default</span>: <span class="hljs-number">35000</span>
+    baseURL: <span class="hljs-string">'The baseURL of the API. Get it from the official API docs'</span>,
+    authBaseURL: <span class="hljs-string">'The baseURL of the /token endpoint for the given product'</span>, // Go <span class="hljs-keyword">to</span> API docs
+    resourceUrl: resourceUrlsMap[transactionType],
+    receipientType: transactionReceipientTypesMap[transactionType],
+    };
+
+    const <span class="hljs-keyword">transaction</span> = <span class="hljs-built_in">new</span> <span class="hljs-keyword">Transaction</span>(transactionType, transactionConfig);
+
+    const someAsyncFunction = async() =&gt; {
+        const details = await <span class="hljs-keyword">transaction</span>.getDetails();
+        <span class="hljs-comment">/*
+        * or you could go step by step but why!!!
+        * await transaction.initialize();
+        * await transaction.pollStatus();
+        * const details = await transaction.getDetails();
+        */</span>
+       const {
+           amount,
+           currency,
+           externalId,
+           payee, // <span class="hljs-keyword">or</span> payer <span class="hljs-keyword">if</span> we are requesting <span class="hljs-keyword">for</span> payment i.e. transactionType === <span class="hljs-string">'collection'</span>
+           status,
+           reason
+       } = details;
+    }
+```</code></pre><h3 id="4-core">4. Core</h3>
+			<blockquote>
+				<p>For any future transaction types or if you want to extend the BaseProduct class</p>
+			</blockquote>
+			<pre><code>```typescript
+<span class="hljs-keyword">import</span> { <span class="hljs-type">BaseProduct</span>, <span class="hljs-type">IApiToken</span> } from <span class="hljs-symbol">'mtn</span>-pay/lib/core';
+
+export <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChildProduct</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseProduct</span> </span>{
+    <span class="hljs-comment">// ...</span>
+}
+```</code></pre><h2 id="advanced-docs">Advanced Docs</h2>
+			<p>For more details of each class, interface, enum etc, visit <a href="https://sopherapps.github.io/mtn-pay-js">the TypeDoc generated docs site</a></p>
 			<h2 id="running-tests">Running Tests</h2>
 			<ol>
 				<li><p>Clone the repo</p>
@@ -938,6 +1084,9 @@ img { max-width: 100%; }
 			</ol>
 			<h2 id="acknowledgements">Acknowledgements</h2>
 			<p>This <a href="https://itnext.io/step-by-step-building-and-publishing-an-npm-typescript-package-44fe7164964c">nice post by Carl_Johan Kihl</a> was very helpful when setting up this Typescript project.</p>
+			<h2 id="license">License</h2>
+			<p>Copyright (c) 2019 <a href="https://github.com/Tinitto">Martin Ahindura</a>
+			Licensed under the <a href="./LICENSE">MIT License</a></p>
 		</div>
 		<div style="position:relative;"><a name="typedoc-main-index" class="tsd-anchor"></a></div>
 		<section class="tsd-panel-group tsd-index-group">
