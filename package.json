@@ -12,7 +12,7 @@
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
-    "version": "npm run format && npm run typedoc && git add -A src",
+    "version": "npm run format && npm run typedoc && git add -A src && git add -A docs",
     "postversion": "git push && git push --tags",
     "typedoc": "typedoc --out docs src --theme minimal"
   },
