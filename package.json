@@ -1,11 +1,11 @@
 {
   "name": "mtn-pay",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A TypeScript package to allow paying with MTN Mobile Money",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "test": "jest --config jestconfig.json",
+    "test": "jest --config jestconfig.json --runInBand",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",

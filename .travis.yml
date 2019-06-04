@@ -12,3 +12,15 @@ before_script:
 
 script:
   - npm run test
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: docs
+  verbose: true
+  on:
+    branch: master
+
+before_deploy:
+  - touch docs/.nojekyll

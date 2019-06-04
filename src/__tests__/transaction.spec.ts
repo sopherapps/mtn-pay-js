@@ -35,6 +35,7 @@ export const testAnyTransactionType = (transactionType: string, requestTimeout =
       apiuserId: process.env.TEST_API_USER_ID || '',
       apiKey: process.env.TEST_API_KEY || '',
       timeout: requestTimeout,
+      interval: 30000, // nver goes below 30 seconds
       baseURL,
       authBaseURL,
       resourceUrl: resourceUrlsMap[transactionType],

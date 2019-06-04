@@ -21,6 +21,7 @@ export interface ITransactionConfig {
   apiuserId: string;
   apiKey: string;
   timeout?: number;
+  interval?: number;
   baseURL?: string;
   authBaseURL?: string;
   resourceUrl?: string;
