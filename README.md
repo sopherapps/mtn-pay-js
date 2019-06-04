@@ -210,3 +210,8 @@ For more details of each class, interface, enum etc, visit [the TypeDoc generate
 ## Acknowledgements
 
 This [nice post by Carl_Johan Kihl](https://itnext.io/step-by-step-building-and-publishing-an-npm-typescript-package-44fe7164964c) was very helpful when setting up this Typescript project.
+
+## License
+
+Copyright (c) 2019 [Martin Ahindura](https://github.com/Tinitto)
+Licensed under the [MIT License](./LICENSE)
