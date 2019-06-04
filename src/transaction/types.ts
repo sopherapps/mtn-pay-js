@@ -1,4 +1,4 @@
-export interface IRecepient {
+export interface IReceipient {
   partyId: string;
   partyIdType: string;
 }
@@ -14,7 +14,7 @@ export interface ITransactionConfig {
   currency?: string;
   externalId?: string;
   payeeNote?: string;
-  receipient: IRecepient;
+  receipient: IReceipient;
   payerMessage?: string;
   subscriptionKey: string;
   targetEnvironment?: string;
@@ -31,8 +31,8 @@ export interface ITransactionBody {
   amount: string;
   currency: string;
   externalId: string;
-  payer?: IRecepient;
-  payee?: IRecepient;
+  payer?: IReceipient;
+  payee?: IReceipient;
   payerMessage: string;
   payeeNote: string;
 }
@@ -72,8 +72,8 @@ export interface ITransactionDetails {
   currency: string;
   externalId: string;
   financialTransactionId: string;
-  payer?: IRecepient;
-  payee?: IRecepient;
+  payer?: IReceipient;
+  payee?: IReceipient;
   status: string;
   reason?: {
     code: string;

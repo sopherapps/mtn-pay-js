@@ -2,7 +2,7 @@ import { generate as uuidv4 } from 'uuidjs';
 import Transaction, {
   transactionReceipientTypesMap,
   resourceUrlsMap,
-  IRecepient,
+  IReceipient,
   ITransactionConfig,
   Status,
   TransactionTypes,
@@ -10,7 +10,7 @@ import Transaction, {
 
 export const testAnyTransactionType = (transactionType: string, requestTimeout = 40000) => {
   describe(`${transactionType}`, () => {
-    const receipient: IRecepient = {
+    const receipient: IReceipient = {
       partyId: process.env.TELEPHONE_FOR_SUCCESS_TX_AFTER_30_SECS || '',
       partyIdType: process.env.TEST_PARTY_ID_TYPE || '',
     };
@@ -38,10 +38,8 @@ export const testAnyTransactionType = (transactionType: string, requestTimeout =
       baseURL,
       authBaseURL,
       resourceUrl: resourceUrlsMap[transactionType],
-      // transactionType,
       receipientType: transactionReceipientTypesMap[transactionType],
     };
-    // const SpecificTransactionClass = specificTransactionClasses[transactionType];
     const transaction = new Transaction(transactionType, transactionConfig);
 
     describe('methods', () => {

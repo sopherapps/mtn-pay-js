@@ -94,6 +94,69 @@ __For the production environment, the API user ID and API Key are obtained throu
     }
     ```
 
+### 3. Transaction
+
+> To create a transaction whether it is to request for payment or to disburse money to another person.
+
+    ```typescript
+    import Transaction, {
+        IStatus,
+        ITransactionBody,
+        ITransactionConfig,
+        ITransactionDetails,
+        ReceipientTypes,
+        ResourceUrls,
+        Status,
+        TransactionTypes,
+        IReceipient
+        } from 'mtn-pay/lib/transaction';
+
+        const receipient: IReceipient = {
+            partyIdType: 'msisdn',
+            partyId: '0770000000' // The phone number of receipient of the request, not your own number
+        }
+
+        const TransactionType = TransactionTypes.COLLECTION; 
+        // or TransactionTypes.DISBURSEMENT or TransactionTypes.REMITTANCE
+
+        const transactionConfig: ITransactionConfig = {
+        amount: 100000, //<money amount to pay or receive>,
+        currency: 'UGX', // in sandbox, it is 'EUR'
+        externalId: 'your own unique UUID generation 4 Id for easy tracking',
+        payeeNote: 'A note for the payee',
+        receipient,
+        payerMessage: 'A message for the payer',
+        subscriptionKey: 'your subscription key for the given product',
+        targetEnvironment: 'sandbox or the production one', // for sandbox, put 'sandbox'
+        apiuserId: 'Your Api user ID',
+        apiKey: 'Your Api  user key',
+        timeout: 35000, // the time in milliseconds for polling status to time out; default: 35000
+        baseURL: 'The baseURL of the API. Get it from the official API docs',
+        authBaseURL: 'The baseURL of the /token endpoint for the given product', // Go to API docs
+        resourceUrl: resourceUrlsMap[transactionType],
+        receipientType: transactionReceipientTypesMap[transactionType],
+        };
+
+        const transaction = new Transaction(transactionType, transactionConfig);
+
+        const someAsyncFunction = async() => {
+            const details = await transaction.getDetails();
+            /*
+            * or you could go step by step but why!!!
+            * await transaction.initialize();
+            * await transaction.pollStatus();
+            * const details = await transaction.getDetails();
+            */
+           const {
+               amount,
+               currency,
+               externalId,
+               payee, // or payer if we are requesting for payment i.e. transactionType === 'collection'
+               status,
+               reason
+           } = details;
+        }
+    ```
 
 ## Running Tests
 
