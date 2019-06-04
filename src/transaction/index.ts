@@ -188,7 +188,7 @@ export default class Transaction extends BaseProduct {
         code: 'TIMEOUT',
         message: `The timeout of ${this.timeout}ms for this ${
           this.transactionType
-          } object was exceeded. Increase it if you must.`,
+        } object was exceeded. Increase it if you must.`,
       };
     }
 
