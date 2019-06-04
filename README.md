@@ -170,6 +170,10 @@ __For the production environment, the API user ID and API Key are obtained throu
     }
     ```
 
+## Advanced Docs
+
+For more details of each class, interface, enum etc, visit [the TypeDoc generated docs site](https://sopherapps.github.io/mtn-pay-js)
+
 ## Running Tests
 
 1. Clone the repo
