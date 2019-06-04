@@ -4,7 +4,6 @@ import { BaseProduct } from '../core';
 import getResources, { IResource } from '../utils/repository';
 import { IAccountConfig, IAccountDetails } from './types';
 
-
 export * from './types';
 
 /**

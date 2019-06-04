@@ -1,6 +1,6 @@
 {
   "name": "mtn-pay",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "A TypeScript package to allow paying with MTN Mobile Money",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -12,7 +12,7 @@
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
-    "version": "npm run format && npm run typedoc && git add -A src",
+    "version": "npm run format && npm run typedoc && git add -A src && git add -A docs",
     "postversion": "git push && git push --tags",
     "typedoc": "typedoc --out docs src --theme minimal"
   },
